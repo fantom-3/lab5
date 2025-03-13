@@ -1,13 +1,15 @@
 package WorkerClass
 
-import java.awt.Color
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 
 class Person(
-    val birthday: LocalDate,
+    val birthday: LocalDateTime,
     val eyeColor: Color? = null,
     val hairColor: Color,
     val nationality: Country
-    ) {
+    ) : Comparable<Person> {
+        override fun compareTo(other: Person): Int {
+            return this.birthday.compareTo(other.birthday)
+        }
 }
