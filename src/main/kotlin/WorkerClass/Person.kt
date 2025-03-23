@@ -1,4 +1,5 @@
 package WorkerClass
+import Utils
 
 import java.time.LocalDateTime
 
@@ -12,4 +13,8 @@ class Person(
         override fun compareTo(other: Person): Int {
             return this.birthday.compareTo(other.birthday)
         }
+
+    override fun toString(): String {
+        return "Person(birthday=$birthday, eyeColor=$eyeColor, hairColor=$hairColor, nationality=$nationality)"
+    }
 }

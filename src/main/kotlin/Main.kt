@@ -8,18 +8,29 @@ fun main() {
     val scanner = Scanner(System.`in`)
     println("Программа для управления коллекцией работников. Введите 'help' для вывода доступных команд.")
 
-    while (true) {
+        /*while (true) {
         print("> ")
         val input = scanner.nextLine().trim()
         when (input) {
             "help" -> Help.helpCommand()
             "exit" -> break
+            "uuuu" -> println("Hello World!")
             else -> println("Неизвестная команда. Введите 'help' для списка команд.")
         }
-    }
+    }*/
     // Добавление нового работника через консоль
     val worker = WorkerManager.newWorker(null)
     WorkerManager.collection["worker1"] = worker
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -27,7 +38,7 @@ fun main() {
     // Автоматическое создание работника
     val tokens = listOf(
         "John Doe", "10", "20.5", "50000", "2023-10-15T10:15:30+01:00[Europe/Paris]",
-        "null", "MANAGER", "2000-01-01T00:00", "null", "BLACK", "GERMANY"
+        "null", "MANAGER", "2000-01-01T00:00", "null", "BLACK", "e"
     )
     val autoWorker = WorkerManager.autoNewWorker(null, tokens)
     WorkerManager.collection["worker2"] = autoWorker

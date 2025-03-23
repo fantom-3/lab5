@@ -28,7 +28,7 @@ object WorkerManager {
      *
      * @return Элемент коллекции.
      */
-    fun newWorker(id: Int?): Worker {
+    /*fun newWorker(id: Int?): Worker {
         val newId = Utils.generateId()
 
         println("Введите имя работника")
@@ -61,6 +61,61 @@ object WorkerManager {
 
         print("Введите личные данные работника")
         val person = readPerson()
+
+        return Worker(newId, name, coordinates, creationDate, salary, startDate, endDate, position, person)
+    }*/
+
+    fun newWorker(id: Int?): Worker {
+        val newId = id ?: Utils.generateId()
+
+        println("Введите имя работника")
+        print("> ")
+        val name = readln().takeIf { Validator.validateName(it) }
+            ?: throw IllegalArgumentException("Имя не может быть пустым")
+
+        println("Введите координаты работника в формате x y")
+        print("> ")
+        val (x, y) = readCoordinates()
+        if (!Validator.validateCoordinates(x, y)) {
+            throw IllegalArgumentException("Некорректные координаты")
+        }
+        val coordinates = Coordinates(x, y)
+
+        val creationDate = LocalDate.now()
+
+        println("Введите зарплату работника")
+        print("> ")
+        val salary = readSalary()
+        if (!Validator.validateSalary(salary)) {
+            throw IllegalArgumentException("Зарплата должна быть больше 0")
+        }
+
+        println("Введите дату начала работы в формате ISO-8601 (например, 2023-10-15T10:15:30+01:00[Europe/Paris])")
+        print("> ")
+        val startDate = readZonedDateTime()
+        if (!Validator.validateStartDate(startDate)) {
+            throw IllegalArgumentException("Некорректная дата начала работы")
+        }
+
+        println("Введите дату окончания работы в формате ISO-8601 (или оставьте пустым)")
+        print("> ")
+        val endDate = readLocalDateOrNull()
+        if (!Validator.validateEndDate(endDate)) {
+            throw IllegalArgumentException("Некорректная дата окончания работы")
+        }
+
+        println("Введите должность работника из указанных: MANAGER, LABORER, HUMAN_RESOURCES, ENGINEER, COOK")
+        print("> ")
+        val position = readPosition()
+        if (!Validator.validatePosition(position)) {
+            throw IllegalArgumentException("Некорректная должность")
+        }
+
+        println("Введите личные данные работника")
+        val person = readPerson()
+        if (!Validator.validatePerson(person.birthday, person.hairColor, person.nationality)) {
+            throw IllegalArgumentException("Некорректные личные данные")
+        }
 
         return Worker(newId, name, coordinates, creationDate, salary, startDate, endDate, position, person)
     }
@@ -152,13 +207,15 @@ object WorkerManager {
                 val (x, y) = readln().split(" ").map { it.trim() }
                 val xValue = x.toLong()
                 val yValue = y.toDouble()
-                if (yValue <= 431) {
+                return xValue to yValue
+                /*if (yValue <= 431 || xValue <= 42) {
                     return xValue to yValue
                 } else {
-                    println("Ошибка: координата y должна быть не больше 431")
-                }
+                    println("Ошибка: не корректно введены координаты")
+                }*/
             } catch (e: Exception) {
                 println("Ошибка при вводе координат. Введите два числа через пробел (x y).")
+                print(">")
             }
         }
     }

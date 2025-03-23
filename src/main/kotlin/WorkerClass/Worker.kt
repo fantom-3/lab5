@@ -12,27 +12,15 @@ class Worker(
     val salary: Long,
     val startDate: ZonedDateTime = Utils.generateStartDate(),
     var endDate: LocalDate?,
-    val person: Position?,
-    var position: Person
+    var position: Position?,
+    val person: Person
 ) : Comparable<Worker> {
     override fun compareTo(other: Worker): Int {
         return id.compareTo(other.id)
     }
 
-
-    /*
-    companion object {
-        private var nextId = 1
+    override fun toString(): String {
+        return "Worker(id=$id, name='$name', coordinates=$coordinates, creationDate=$creationDate," +
+                "salary=$salary, startDate=$startDate, endDate=$endDate, position=$position, person=$person)"
     }
-
-    init {
-        this.id = nextId++
-        this.creationDate = LocalDate.now()
-
-        require(id > 0) {"поле id больше нуля"}
-        require(salary >0) {"поле salary больше нуля"}
-        require(name.isNotEmpty()) {"поле name не пустое"}
-    }
-    */
-
 }
