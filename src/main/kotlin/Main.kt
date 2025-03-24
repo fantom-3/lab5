@@ -19,9 +19,22 @@ fun main() {
         }
     }*/
     // Добавление нового работника через консоль
-    val worker = WorkerManager.newWorker(null)
-    WorkerManager.collection["worker1"] = worker
+    // val worker = WorkerManager.newWorker(null)
+    // WorkerManager.collection["worker1"] = worker
+    val worker1 = WorkerManager.newWorker(null)
+    WorkerManager.addWorker(worker1)
 
+    val worker2 = WorkerManager.newWorker(null)
+    WorkerManager.addWorker(worker2)
+
+    println("Все работники:")
+    WorkerManager.showAllWorkers()
+
+    println("Удаление работника с id = 1")
+    WorkerManager.removeWorkerById(1)
+
+    println("Все работники после удаления:")
+    WorkerManager.showAllWorkers()
 
 
 

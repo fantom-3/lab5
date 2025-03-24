@@ -5,10 +5,10 @@ import java.time.LocalDateTime
 
 
 class Person(
-    val birthday: LocalDateTime,
-    val eyeColor: Color? = null,
-    val hairColor: Color,
-    val nationality: Country
+    private val birthday: LocalDateTime,
+    private val eyeColor: Color? = null,
+    private val hairColor: Color,
+    private val nationality: Country
     ) : Comparable<Person> {
         override fun compareTo(other: Person): Int {
             return this.birthday.compareTo(other.birthday)

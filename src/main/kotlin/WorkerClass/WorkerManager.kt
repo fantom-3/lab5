@@ -7,10 +7,10 @@ import java.time.ZonedDateTime
 
 /**
  * Объект управляет коллекцией работников.
- * Хранит данные в виде HashMap, где ключ — строка, а значение — объект Worker.
+ * Хранит данные в виде LinkedList.
  */
 object WorkerManager {
-    var collection = HashMap<String, Worker>()
+    var collection = LinkedList<Worker>()
 
     /**
      * Возвращает максимальный id, которые используются.
@@ -18,7 +18,7 @@ object WorkerManager {
      * @return id, число.
      */
     fun getMaxId(): Int {
-        return collection.values.maxOfOrNull { it.id } ?: 0
+        return collection.maxOfOrNull { it.id } ?: 0
     }
 
     /**
@@ -28,351 +28,228 @@ object WorkerManager {
      *
      * @return Элемент коллекции.
      */
-    /*fun newWorker(id: Int?): Worker {
-        val newId = Utils.generateId()
-
-        println("Введите имя работника")
-        print("> ")
-        val name = readln().takeIf { it.isNotBlank() } ?: throw IllegalArgumentException("Имя не может быть пустым")
-
-        println("Введите координаты работника в формате x y")
-        print("> ")
-        val (x, y) = readCoordinates()
-
-        val coordinates = Coordinates(x, y)
-
-        val creationDate = LocalDate.now()
-
-        println("Введите зарплату работника")
-        print("> ")
-        val salary = readSalary()
-
-        println("Введите дату начала работы в формате ISO-8601 (например, 2023-10-15T10:15:30+01:00[Europe/Paris])")
-        print("> ")
-        val startDate = readZonedDateTime()
-
-        println("Введите дату окончания работы в формате ISO-8601 (или оставьте пустым)")
-        print("> ")
-        val endDate = readLocalDateOrNull()
-
-        println("Введите должность работника из указанных: MANAGER, LABORER, HUMAN_RESOURCES, ENGINEER, COOK")
-        print("> ")
-        val position = readPosition()
-
-        print("Введите личные данные работника")
-        val person = readPerson()
-
-        return Worker(newId, name, coordinates, creationDate, salary, startDate, endDate, position, person)
-    }*/
-
-    fun newWorker(id: Int?): Worker {
-        val newId = id ?: Utils.generateId()
-
-        println("Введите имя работника")
-        print("> ")
-        val name = readln().takeIf { Validator.validateName(it) }
-            ?: throw IllegalArgumentException("Имя не может быть пустым")
-
-        println("Введите координаты работника в формате x y")
-        print("> ")
-        val (x, y) = readCoordinates()
-        if (!Validator.validateCoordinates(x, y)) {
-            throw IllegalArgumentException("Некорректные координаты")
-        }
-        val coordinates = Coordinates(x, y)
-
-        val creationDate = LocalDate.now()
-
-        println("Введите зарплату работника")
-        print("> ")
-        val salary = readSalary()
-        if (!Validator.validateSalary(salary)) {
-            throw IllegalArgumentException("Зарплата должна быть больше 0")
-        }
-
-        println("Введите дату начала работы в формате ISO-8601 (например, 2023-10-15T10:15:30+01:00[Europe/Paris])")
-        print("> ")
-        val startDate = readZonedDateTime()
-        if (!Validator.validateStartDate(startDate)) {
-            throw IllegalArgumentException("Некорректная дата начала работы")
-        }
-
-        println("Введите дату окончания работы в формате ISO-8601 (или оставьте пустым)")
-        print("> ")
-        val endDate = readLocalDateOrNull()
-        if (!Validator.validateEndDate(endDate)) {
-            throw IllegalArgumentException("Некорректная дата окончания работы")
-        }
-
-        println("Введите должность работника из указанных: MANAGER, LABORER, HUMAN_RESOURCES, ENGINEER, COOK")
-        print("> ")
-        val position = readPosition()
-        if (!Validator.validatePosition(position)) {
-            throw IllegalArgumentException("Некорректная должность")
-        }
-
-        println("Введите личные данные работника")
-        val person = readPerson()
-        if (!Validator.validatePerson(person.birthday, person.hairColor, person.nationality)) {
-            throw IllegalArgumentException("Некорректные личные данные")
-        }
-
-        return Worker(newId, name, coordinates, creationDate, salary, startDate, endDate, position, person)
-    }
 
     /**
-     * Создает новый элемент коллекции, получая поля через аргумент (для автоматического выполнения).
+     * Создает новый элемент коллекции, запрашивая поля для ввода через консоль.
      *
-     * @param id id работника, если нужен. Иначе генерируется автоматически.
-     * @param tokens Список из аргументов, из которых формируются поля.
+     * @property id Уникальный идентификатор работника. Должен быть больше 0.
+     * @property name Имя работника. Не может быть null или пустым.
+     * @property coordinates Координаты работника. Не могут быть null.
+     * @property creationDate Дата создания записи. Не может быть null.
+     * @property salary Зарплата работника. Не может быть null и должна быть больше 0.
+     * @property startDate Дата начала работы. Не может быть null.
+     * @property endDate Дата окончания работы. Может быть null.
+     * @property position Должность работника. Может быть null.
+     * @property person Личные данные работника. Не может быть null.
      *
      * @return Элемент коллекции.
      */
-    fun autoNewWorker(id: Int?, tokens: List<String>): Worker {
+    fun newWorker(id: Int?): Worker {
         val newId = id ?: Utils.generateId()
-
-        val name = tokens[0]
-
-        val (x, y) = tokens[1].toLong() to tokens[2].toDouble()
+        val name = readValidName()
+        val (x, y) = readValidCoordinates()
         val coordinates = Coordinates(x, y)
-
-        val creationDate = LocalDate.now()
-
-        val salary = tokens[3].toLong()
-
-        val startDate = ZonedDateTime.parse(tokens[4])
-
-        val endDate = tokens[5].takeIf { it != "null" }?.let { LocalDate.parse(it) }
-
-        val position = tokens[6].takeIf { it != "null" }?.let { Position.valueOf(it) }
-
-        val person = Person(
-            birthday = LocalDateTime.parse(tokens[7]),
-            eyeColor = tokens[8].takeIf { it != "null" }?.let { Color.valueOf(it) },
-            hairColor = Color.valueOf(tokens[9]),
-            nationality = Country.valueOf(tokens[10])
-        )
-
+        val creationDate = Utils.generateCreationDate()
+        val salary = readValidSalary()
+        val startDate = readValidStartDate()
+        val endDate = readValidEndDate()
+        val position = readValidPosition()
+        val person = readValidPerson()
         return Worker(newId, name, coordinates, creationDate, salary, startDate, endDate, position, person)
     }
 
-    /**
-     * Выдает значение ключа по id.
-     *
-     * @param id id элемента.
-     *
-     * @return Ключ элемента.
-     */
-    fun getKeyById(id: Int): String {
-        return collection.entries.find { it.value.id == id }?.key ?: ""
-    }
-
-    /**
-     * Выдает значение ключа по зарплате.
-     *
-     * @param salary зарплата элемента.
-     *
-     * @return Ключ элемента.
-     */
-    fun getKeyBySalary(salary: Long): String {
-        return collection.entries.find { it.value.salary == salary }?.key ?: ""
-    }
-
-    /**
-     * Выдает значение ключа по имени, берет минимальное.
-     *
-     * @return Ключ элемента.
-     */
-    fun getMinByNameKey(): String {
-        return collection.entries.minByOrNull { it.value.name }?.key ?: ""
-    }
-
-    /**
-     * Выдает список работников, отсортированный по убыванию зарплаты.
-     *
-     * @return Список работников.
-     */
-    fun getDescendingWorkers(): List<Worker> {
-        return collection.values.sortedByDescending { it.salary }
-    }
-
-    /**
-     * Чтение координат из консоли.
-     *
-     * @return Пара (x, y).
-     */
-    private fun readCoordinates(): Pair<Long, Double> {
+    private fun readValidName(): String {
+        println("Введите имя работника")
         while (true) {
-            try {
-                val (x, y) = readln().split(" ").map { it.trim() }
-                val xValue = x.toLong()
-                val yValue = y.toDouble()
-                return xValue to yValue
-                /*if (yValue <= 431 || xValue <= 42) {
-                    return xValue to yValue
-                } else {
-                    println("Ошибка: не корректно введены координаты")
-                }*/
-            } catch (e: Exception) {
-                println("Ошибка при вводе координат. Введите два числа через пробел (x y).")
-                print(">")
+            print("> ")
+            val name = readln().trim()
+            if (Validator.validateName(name)) {
+                return name
             }
         }
     }
 
-    /**
-     * Чтение зарплаты из консоли.
-     *
-     * @return Зарплата.
-     */
-    private fun readSalary(): Long {
+    private fun readValidCoordinates(): Pair<Long, Double> {
+        println("Введите координаты работника в формате x y")
         while (true) {
+            print("> ")
+            val input = readln().trim().split(" ")
+            if (input.size == 2) {
+                try {
+                    val x = input[0].toLong()
+                    val y = input[1].toDouble()
+                    if (Validator.validateCoordinates(x, y)) {
+                        return x to y
+                    }
+                } catch (e: NumberFormatException) {
+                    println("Ошибка: Введите два числа (x и y).")
+                }
+            } else {
+                println("Ошибка: Введите два числа через пробел.")
+            }
+        }
+    }
+
+    private fun readValidSalary(): Long {
+        println("Введите зарплату работника")
+        while (true) {
+            print("> ")
             try {
-                val salary = readln().toLong()
-                if (salary > 0) {
+                val salary = readln().trim().toLong()
+                if (Validator.validateSalary(salary)) {
                     return salary
-                } else {
-                    println("Ошибка: зарплата должна быть больше 0")
+                }
+            } catch (e: NumberFormatException) {
+                println("Ошибка: Введите число.")
+            }
+        }
+    }
+
+    private fun readValidStartDate(): ZonedDateTime {
+        println("Введите дату начала работы в формате ISO-8601 (например, 2023-10-15T10:15:30+01:00[Europe/Paris])")
+        while (true) {
+            print("> ")
+            try {
+                val startDate = ZonedDateTime.parse(readln().trim())
+                if (Validator.validateStartDate(startDate)) {
+                    return startDate
                 }
             } catch (e: Exception) {
-                println("Ошибка при вводе зарплаты. Введите число.")
+                println("Ошибка: Введите дату в формате ISO-8601.")
             }
         }
     }
 
-    /**
-     * Чтение даты и времени из консоли.
-     *
-     * @return ZonedDateTime.
-     */
-    private fun readZonedDateTime(): ZonedDateTime {
+    private fun readValidEndDate(): LocalDate? {
+        println("Введите дату окончания работы в формате ISO-8601 (или оставьте пустым)")
         while (true) {
-            try {
-                return ZonedDateTime.parse(readln())
-            } catch (e: Exception) {
-                println("Ошибка при вводе даты. Введите дату в формате ISO-8601.")
+            print("> ")
+            val input = readln().trim()
+            if (input.isEmpty()) {
+                return null
             }
-        }
-    }
-
-    /**
-     * Чтение даты из консоли или null.
-     *
-     * @return LocalDate или null.
-     */
-    private fun readLocalDateOrNull(): LocalDate? {
-        while (true) {
-            val input = readln()
-            if (input.isBlank()) return null
             try {
                 return LocalDate.parse(input)
             } catch (e: Exception) {
-                println("Ошибка при вводе даты. Введите дату в формате ISO-8601 или оставьте пустым.")
+                println("Ошибка: Введите дату в формате ISO-8601 или оставьте пустым.")
             }
         }
     }
 
-    /**
-     * Чтение должности из консоли.
-     *
-     * @return Position или null.
-     */
-    private fun readPosition(): Position? {
+    private fun readValidPosition(): Position? {
+        println("Введите должность работника из указанных: MANAGER, LABORER, HUMAN_RESOURCES, ENGINEER, COOK")
         while (true) {
+            print("> ")
+            val input = readln().trim()
+            if (input.isEmpty()) {
+                return null
+            }
             try {
-                val input = readln()
-                if (input.isBlank()) return null
                 return Position.valueOf(input)
-            } catch (e: Exception) {
-                println("Ошибка при вводе должности. Введите одно из: MANAGER, LABORER, HUMAN_RESOURCES, ENGINEER, COOK.")
+            } catch (e: IllegalArgumentException) {
+                println("Ошибка: Введите одну из допустимых должностей.")
             }
         }
     }
 
-    /**
-     * Чтение личных данных работника из консоли.
-     *
-     * @return Объект Person.
-     */
-    private fun readPerson(): Person {
+    private fun readValidPerson(): Person {
+        println("Введите личные данные работника")
+        while (true) {
+            val birthday = readValidBirthday()
+            val eyeColor = readValidEyeColor()
+            val hairColor = readValidHairColor()
+            val nationality = readValidNationality()
+
+            if (Validator.validatePerson(birthday, hairColor, nationality)) {
+                return Person(birthday, eyeColor, hairColor, nationality)
+            }
+        }
+    }
+
+    private fun readValidBirthday(): LocalDateTime {
         println("Введите дату рождения в формате ISO-8601 (например, 2023-10-15T10:15:30)")
-        print("> ")
-        val birthday = readLocalDateTime()
-
-        println("Введите цвет глаз из указанных: GREEN, RED, BLACK, WHITE (или оставьте пустым)")
-        print("> ")
-        val eyeColor = readColorOrNull()
-
-        println("Введите цвет волос из указанных: GREEN, RED, BLACK, WHITE")
-        print("> ")
-        val hairColor = readColor()
-
-        println("Введите национальность из указанных: GERMANY, CHINA, INDIA, VATICAN")
-        print("> ")
-        val nationality = readCountry()
-
-        return Person(birthday, eyeColor, hairColor, nationality)
-    }
-
-    /**
-     * Чтение даты и времени из консоли.
-     *
-     * @return LocalDateTime.
-     */
-    private fun readLocalDateTime(): LocalDateTime {
         while (true) {
+            print("> ")
             try {
-                return LocalDateTime.parse(readln())
+                return LocalDateTime.parse(readln().trim())
             } catch (e: Exception) {
-                println("Ошибка при вводе даты. Введите дату в формате ISO-8601.")
+                println("Ошибка: Введите дату в формате ISO-8601.")
             }
         }
     }
 
-    /**
-     * Чтение цвета из консоли или null.
-     *
-     * @return Color или null.
-     */
-    private fun readColorOrNull(): Color? {
+    private fun readValidEyeColor(): Color? {
+        println("Введите цвет глаз из указанных: GREEN, RED, BLACK, WHITE (или оставьте пустым)")
         while (true) {
-            val input = readln()
-            if (input.isBlank()) return null
+            print("> ")
+            val input = readln().trim()
+            if (input.isEmpty()) {
+                return null
+            }
             try {
                 return Color.valueOf(input)
-            } catch (e: Exception) {
-                println("Ошибка при вводе цвета. Введите одно из: GREEN, RED, BLACK, WHITE.")
+            } catch (e: IllegalArgumentException) {
+                println("Ошибка: Введите один из допустимых цветов.")
+            }
+        }
+    }
+
+    private fun readValidHairColor(): Color {
+        println("Введите цвет волос из указанных: GREEN, RED, BLACK, WHITE")
+        while (true) {
+            print("> ")
+            try {
+                return Color.valueOf(readln().trim())
+            } catch (e: IllegalArgumentException) {
+                println("Ошибка: Введите один из допустимых цветов.")
+            }
+        }
+    }
+
+    private fun readValidNationality(): Country {
+        println("Введите национальность из указанных: GERMANY, CHINA, INDIA, VATICAN")
+        while (true) {
+            print("> ")
+            try {
+                return Country.valueOf(readln().trim())
+            } catch (e: IllegalArgumentException) {
+                println("Ошибка: Введите одну из допустимых национальностей.")
             }
         }
     }
 
     /**
-     * Чтение цвета из консоли.
+     * Добавляет работника в коллекцию.
      *
-     * @return Color.
+     * @param worker Работник для добавления.
      */
-    private fun readColor(): Color {
-        while (true) {
-            try {
-                return Color.valueOf(readln())
-            } catch (e: Exception) {
-                println("Ошибка при вводе цвета. Введите одно из: GREEN, RED, BLACK, WHITE.")
-            }
+    fun addWorker(worker: Worker) {
+        collection.add(worker)
+    }
+
+    /**
+     * Удаляет работника из коллекции по id.
+     *
+     * @param id id работника для удаления.
+     */
+    fun removeWorkerById(id: Int) {
+        val worker = collection.find { it.id == id }
+        if (worker != null) {
+            collection.remove(worker)
+            println("Работник с id $id удален.")
+        } else {
+            println("Работник с id $id не найден.")
         }
     }
 
     /**
-     * Чтение национальности из консоли.
-     *
-     * @return Country.
+     * Выводит всех работников в коллекции.
      */
-    private fun readCountry(): Country {
-        while (true) {
-            try {
-                return Country.valueOf(readln())
-            } catch (e: Exception) {
-                println("Ошибка при вводе национальности. Введите одно из: GERMANY, CHINA, INDIA, VATICAN.")
-            }
+    fun showAllWorkers() {
+        if (collection.isEmpty()) {
+            println("Коллекция пуста.")
+        } else {
+            collection.forEach { println(it) }
         }
     }
 }
