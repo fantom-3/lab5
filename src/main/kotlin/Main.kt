@@ -1,23 +1,36 @@
 import WorkerClass.*
-import Commands.*
 import java.util.*
-import kotlin.system.exitProcess
-
+import Commands.*
 
 fun main() {
     val scanner = Scanner(System.`in`)
     println("Программа для управления коллекцией работников. Введите 'help' для вывода доступных команд.")
 
-        /*while (true) {
-        print("> ")
-        val input = scanner.nextLine().trim()
-        when (input) {
-            "help" -> Help.helpCommand()
-            "exit" -> break
-            "uuuu" -> println("Hello World!")
-            else -> println("Неизвестная команда. Введите 'help' для списка команд.")
+        while (true) {
+            print("> ")
+            val input = scanner.nextLine().trim()
+            when (input) {
+                "help" -> Help.helpCommand()
+                "add" -> Add.addCommand()
+                "show" -> Show.showCommand()
+                "info" -> Info.infoCommand()
+                "remove_by_id" -> {
+                    if (input.size == 2) {
+                        try {
+                            Remove.remove_by_id(input[1].toInt())
+                        } catch (e: NumberFormatException) {
+                            println("Ошибка: ID должен быть числом.")
+                        }
+                    } else {
+                        println("Использование: remove_by_id <id>")
+                    }
+                }
+                "exit" -> break
+                "uuuu" -> println("Hello World!")
+                else -> println("Неизвестная команда. Введите 'help' для списка команд.")
         }
-    }*/
+    }
+
     // Добавление нового работника через консоль
     // val worker = WorkerManager.newWorker(null)
     // WorkerManager.collection["worker1"] = worker
