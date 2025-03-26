@@ -1,4 +1,3 @@
-import WorkerClass.*
 import java.util.*
 import Commands.*
 
@@ -6,78 +5,51 @@ fun main() {
     val scanner = Scanner(System.`in`)
     println("Программа для управления коллекцией работников. Введите 'help' для вывода доступных команд.")
 
-        while (true) {
-            print("> ")
-            val input = scanner.nextLine().trim()
-            when (input) {
-                "help" -> Help.helpCommand()
-                "add" -> Add.addCommand()
-                "show" -> Show.showCommand()
-                "info" -> Info.infoCommand()
-                "remove_by_id" -> {
-                    if (input.size == 2) {
-                        try {
-                            Remove.remove_by_id(input[1].toInt())
-                        } catch (e: NumberFormatException) {
-                            println("Ошибка: ID должен быть числом.")
-                        }
-                    } else {
-                        println("Использование: remove_by_id <id>")
+    while (true) {
+        print("> ")
+        val userInput = scanner.nextLine().trim()
+        if (userInput.isEmpty()) continue
+
+        val inputParts = userInput.split(" ")
+        val command = inputParts[0]
+        val args = inputParts.drop(1) // Все части после команды
+
+        when (command) {
+            "help" -> Help.helpCommand()
+            "add" -> Add.addCommand()
+            "show" -> Show.showCommand()
+            "info" -> Info.infoCommand()
+            "update" -> {
+                when {
+                    args.isEmpty() -> println("Ошибка: отсутствует ID")
+                    args.size > 1 -> println("Ошибка: слишком много аргументов")
+                    else -> try {
+                        Update.updateCommand(args[0].toInt())
+                    } catch (e: NumberFormatException) {
+                        println("Ошибка: ID должен быть числом")
                     }
                 }
-                "exit" -> break
-                "uuuu" -> println("Hello World!")
-                else -> println("Неизвестная команда. Введите 'help' для списка команд.")
+            }
+            "remove_by_id" -> {
+                when {
+                    args.isEmpty() -> println("Ошибка: отсутствует ID")
+                    args.size > 1 -> println("Ошибка: слишком много аргументов")
+                    else -> try {
+                        Remove.remove_by_id(args[0].toInt())
+                    } catch (e: NumberFormatException) {
+                        println("Ошибка: ID должен быть числом")
+                    }
+                }
+            }
+            "clear" -> Clear.clearCommand()
+            "save" -> {
+                when {
+                    args.size > 1 -> println("Ошибка: слишком много аргументов")
+                    else -> SaveCommand.execute(args.firstOrNull())
+                }
+            }
+            "exit" -> break
+            else -> println("Неизвестная команда. Введите 'help' для списка команд.")
         }
     }
-
-    // Добавление нового работника через консоль
-    // val worker = WorkerManager.newWorker(null)
-    // WorkerManager.collection["worker1"] = worker
-    val worker1 = WorkerManager.newWorker(null)
-    WorkerManager.addWorker(worker1)
-
-    val worker2 = WorkerManager.newWorker(null)
-    WorkerManager.addWorker(worker2)
-
-    println("Все работники:")
-    WorkerManager.showAllWorkers()
-
-    println("Удаление работника с id = 1")
-    WorkerManager.removeWorkerById(1)
-
-    println("Все работники после удаления:")
-    WorkerManager.showAllWorkers()
-
-
-
-
-
-
-
-
-
-
-
-
-    /*
-    // Автоматическое создание работника
-    val tokens = listOf(
-        "John Doe", "10", "20.5", "50000", "2023-10-15T10:15:30+01:00[Europe/Paris]",
-        "null", "MANAGER", "2000-01-01T00:00", "null", "BLACK", "e"
-    )
-    val autoWorker = WorkerManager.autoNewWorker(null, tokens)
-    WorkerManager.collection["worker2"] = autoWorker
-
-    // Поиск работника по id
-    val foundWorker = WorkerManager.collection[WorkerManager.getKeyById(1)]
-    println("Найден работник: $foundWorker")
-
-    // Сортировка по убыванию зарплаты
-    val sortedWorkers = WorkerManager.getDescendingWorkers()
-    println("Работники, отсортированные по зарплате:")
-    sortedWorkers.forEach { println(it) }
-    */
-
-
 }

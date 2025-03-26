@@ -6,14 +6,14 @@ import java.time.ZonedDateTime
 
 class Worker(
     var id: Int = Utils.generateId(),
-    val name: String,
-    val coordinates: Coordinates,
+    var name: String,
+    var coordinates: Coordinates,
     var creationDate: LocalDate = Utils.generateCreationDate(),
-    val salary: Long,
-    val startDate: ZonedDateTime = Utils.generateStartDate(),
+    var salary: Long,
+    var startDate: ZonedDateTime = Utils.generateStartDate(),
     var endDate: LocalDate?,
     var position: Position?,
-    val person: Person
+    var person: Person
 ) : Comparable<Worker> {
     override fun compareTo(other: Worker): Int {
         return id.compareTo(other.id)

@@ -1,9 +1,6 @@
 package WorkerClass
 
 import java.util.*
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.ZonedDateTime
 
 /**
  * Объект управляет коллекцией работников.
@@ -11,212 +8,6 @@ import java.time.ZonedDateTime
  */
 object WorkerManager {
     var collection = LinkedList<Worker>()
-
-    /**
-     * Возвращает максимальный id, которые используются.
-     *
-     * @return id, число.
-     */
-    fun getMaxId(): Int {
-        return collection.maxOfOrNull { it.id } ?: 0
-    }
-
-    /**
-     * Создает новый элемент коллекции, запрашивая поля для ввода через консоль.
-     *
-     * @param id id работника, если нужен. Иначе генерируется автоматически.
-     *
-     * @return Элемент коллекции.
-     */
-
-    /**
-     * Создает новый элемент коллекции, запрашивая поля для ввода через консоль.
-     *
-     * @property id Уникальный идентификатор работника. Должен быть больше 0.
-     * @property name Имя работника. Не может быть null или пустым.
-     * @property coordinates Координаты работника. Не могут быть null.
-     * @property creationDate Дата создания записи. Не может быть null.
-     * @property salary Зарплата работника. Не может быть null и должна быть больше 0.
-     * @property startDate Дата начала работы. Не может быть null.
-     * @property endDate Дата окончания работы. Может быть null.
-     * @property position Должность работника. Может быть null.
-     * @property person Личные данные работника. Не может быть null.
-     *
-     * @return Элемент коллекции.
-     */
-    fun newWorker(id: Int?): Worker {
-        val newId = id ?: Utils.generateId()
-        val name = readValidName()
-        val (x, y) = readValidCoordinates()
-        val coordinates = Coordinates(x, y)
-        val creationDate = Utils.generateCreationDate()
-        val salary = readValidSalary()
-        val startDate = readValidStartDate()
-        val endDate = readValidEndDate()
-        val position = readValidPosition()
-        val person = readValidPerson()
-        return Worker(newId, name, coordinates, creationDate, salary, startDate, endDate, position, person)
-    }
-
-    private fun readValidName(): String {
-        println("Введите имя работника")
-        while (true) {
-            print("> ")
-            val name = readln().trim()
-            if (Validator.validateName(name)) {
-                return name
-            }
-        }
-    }
-
-    private fun readValidCoordinates(): Pair<Long, Double> {
-        println("Введите координаты работника в формате x y")
-        while (true) {
-            print("> ")
-            val input = readln().trim().split(" ")
-            if (input.size == 2) {
-                try {
-                    val x = input[0].toLong()
-                    val y = input[1].toDouble()
-                    if (Validator.validateCoordinates(x, y)) {
-                        return x to y
-                    }
-                } catch (e: NumberFormatException) {
-                    println("Ошибка: Введите два числа (x и y).")
-                }
-            } else {
-                println("Ошибка: Введите два числа через пробел.")
-            }
-        }
-    }
-
-    private fun readValidSalary(): Long {
-        println("Введите зарплату работника")
-        while (true) {
-            print("> ")
-            try {
-                val salary = readln().trim().toLong()
-                if (Validator.validateSalary(salary)) {
-                    return salary
-                }
-            } catch (e: NumberFormatException) {
-                println("Ошибка: Введите число.")
-            }
-        }
-    }
-
-    private fun readValidStartDate(): ZonedDateTime {
-        println("Введите дату начала работы в формате ISO-8601 (например, 2023-10-15T10:15:30+01:00[Europe/Paris])")
-        while (true) {
-            print("> ")
-            try {
-                val startDate = ZonedDateTime.parse(readln().trim())
-                if (Validator.validateStartDate(startDate)) {
-                    return startDate
-                }
-            } catch (e: Exception) {
-                println("Ошибка: Введите дату в формате ISO-8601.")
-            }
-        }
-    }
-
-    private fun readValidEndDate(): LocalDate? {
-        println("Введите дату окончания работы в формате ISO-8601 (или оставьте пустым)")
-        while (true) {
-            print("> ")
-            val input = readln().trim()
-            if (input.isEmpty()) {
-                return null
-            }
-            try {
-                return LocalDate.parse(input)
-            } catch (e: Exception) {
-                println("Ошибка: Введите дату в формате ISO-8601 или оставьте пустым.")
-            }
-        }
-    }
-
-    private fun readValidPosition(): Position? {
-        println("Введите должность работника из указанных: MANAGER, LABORER, HUMAN_RESOURCES, ENGINEER, COOK")
-        while (true) {
-            print("> ")
-            val input = readln().trim()
-            if (input.isEmpty()) {
-                return null
-            }
-            try {
-                return Position.valueOf(input)
-            } catch (e: IllegalArgumentException) {
-                println("Ошибка: Введите одну из допустимых должностей.")
-            }
-        }
-    }
-
-    private fun readValidPerson(): Person {
-        println("Введите личные данные работника")
-        while (true) {
-            val birthday = readValidBirthday()
-            val eyeColor = readValidEyeColor()
-            val hairColor = readValidHairColor()
-            val nationality = readValidNationality()
-
-            if (Validator.validatePerson(birthday, hairColor, nationality)) {
-                return Person(birthday, eyeColor, hairColor, nationality)
-            }
-        }
-    }
-
-    private fun readValidBirthday(): LocalDateTime {
-        println("Введите дату рождения в формате ISO-8601 (например, 2023-10-15T10:15:30)")
-        while (true) {
-            print("> ")
-            try {
-                return LocalDateTime.parse(readln().trim())
-            } catch (e: Exception) {
-                println("Ошибка: Введите дату в формате ISO-8601.")
-            }
-        }
-    }
-
-    private fun readValidEyeColor(): Color? {
-        println("Введите цвет глаз из указанных: GREEN, RED, BLACK, WHITE (или оставьте пустым)")
-        while (true) {
-            print("> ")
-            val input = readln().trim()
-            if (input.isEmpty()) {
-                return null
-            }
-            try {
-                return Color.valueOf(input)
-            } catch (e: IllegalArgumentException) {
-                println("Ошибка: Введите один из допустимых цветов.")
-            }
-        }
-    }
-
-    private fun readValidHairColor(): Color {
-        println("Введите цвет волос из указанных: GREEN, RED, BLACK, WHITE")
-        while (true) {
-            print("> ")
-            try {
-                return Color.valueOf(readln().trim())
-            } catch (e: IllegalArgumentException) {
-                println("Ошибка: Введите один из допустимых цветов.")
-            }
-        }
-    }
-
-    private fun readValidNationality(): Country {
-        println("Введите национальность из указанных: GERMANY, CHINA, INDIA, VATICAN")
-        while (true) {
-            print("> ")
-            try {
-                return Country.valueOf(readln().trim())
-            } catch (e: IllegalArgumentException) {
-                println("Ошибка: Введите одну из допустимых национальностей.")
-            }
-        }
-    }
 
     /**
      * Добавляет работника в коллекцию.
@@ -227,20 +18,6 @@ object WorkerManager {
         collection.add(worker)
     }
 
-    /**
-     * Удаляет работника из коллекции по id.
-     *
-     * @param id id работника для удаления.
-     */
-    fun removeWorkerById(id: Int) {
-        val worker = collection.find { it.id == id }
-        if (worker != null) {
-            collection.remove(worker)
-            println("Работник с id $id удален.")
-        } else {
-            println("Работник с id $id не найден.")
-        }
-    }
 
 
     /**
@@ -267,6 +44,13 @@ object WorkerManager {
                 """.trimMargin()
             )
         }
+    }
+
+    /**
+     * Очищает коллекцию работников.
+     */
+    fun clearCollection() {
+        collection.clear()
     }
 }
 

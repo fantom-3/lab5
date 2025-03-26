@@ -5,7 +5,7 @@ object Utils {
 
     private var nextId: Int = 1
 
-    fun generateId(): Int {
+        fun generateId(): Int {
         return nextId++
     }
 
