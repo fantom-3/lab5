@@ -19,6 +19,7 @@ fun main() {
             "add" -> Add.addCommand()
             "show" -> Show.showCommand()
             "info" -> Info.infoCommand()
+            "head" -> Head.headCommand()
             "update" -> {
                 when {
                     args.isEmpty() -> println("Ошибка: отсутствует ID")
