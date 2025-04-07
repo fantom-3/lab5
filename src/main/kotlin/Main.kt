@@ -50,6 +50,17 @@ fun main() {
                     else -> SaveCommand.execute(args.firstOrNull())
                 }
             }
+            "remove_greater" -> {
+                when {
+                    args.isEmpty() -> println("Ошибка: отсутствует ID")
+                    args.size > 1 -> println("Ошибка: слишком много аргументов")
+                    else -> try {
+                        RemoveGreater.remove_greaterCommand(args[0].toInt())
+                    } catch (e: NumberFormatException) {
+                        println("Ошибка: ID должен быть числом")
+                    }
+                }
+            }
             "exit" -> break
             else -> println("Неизвестная команда. Введите 'help' для списка команд.")
         }

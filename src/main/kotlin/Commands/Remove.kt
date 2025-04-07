@@ -12,25 +12,6 @@ object Remove {
      *
      * @param id ID элемента для удаления
      */
-    /*fun remove_by_id(id: Int) {
-        val iterator = WorkerManager.collection.iterator()
-        var found = false
-
-        while (iterator.hasNext()) {
-            val worker = iterator.next()
-            if (worker.id == id) {
-                iterator.remove()
-                found = true
-                break
-            }
-        }
-
-        if (found) {
-            println("Элемент с ID $id  успешно удален.")
-        } else {
-            println("Элемент с ID $id не найден в коллекции.")
-        }
-    }*/
     fun remove_by_id(id: Int) {
         val initialSize = WorkerManager.collection.size
 

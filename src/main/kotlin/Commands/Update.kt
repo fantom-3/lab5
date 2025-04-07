@@ -58,14 +58,14 @@ object Update {
             prompt = "Текущая дата окончания: ${worker.endDate ?: "не указана"}. Введите новую дату (ISO-8601) или оставьте пустым:",
             validator = { true },
             parser = { if (it.isEmpty()) null else LocalDate.parse(it) }
-        )
+        ) ?: worker.endDate
 
         // Обновление должности
         worker.position = updateEnumField(
             currentValue = worker.position,
             enumValues = Position.values(),
             prompt = "Текущая должность: ${worker.position ?: "не указана"}. Введите новую должность (${Position.values().joinToString()}):"
-        )
+        ) ?: worker.position
 
         // Обновление личных данных
         worker.person = updatePerson(worker.person) ?: worker.person
