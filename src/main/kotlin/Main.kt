@@ -61,6 +61,12 @@ fun main() {
                     }
                 }
             }
+            "count_less_than_position position" -> {
+                when {
+                    args.size == 0 -> println("Ошибка: введите аргумент")
+                    else -> CountLessThenPosition.countLess_positionCommand(args[0])
+                }
+            }
             "exit" -> break
             else -> println("Неизвестная команда. Введите 'help' для списка команд.")
         }

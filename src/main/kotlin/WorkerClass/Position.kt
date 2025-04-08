@@ -1,9 +1,9 @@
 package WorkerClass
 
 enum class Position {
-    MANAGER,
     LABORER,
+    COOK,
     HUMAN_RESOURCES,
-    ENGINEER,
-    COOK;
+    MANAGER,
+    ENGINEER;
 }
