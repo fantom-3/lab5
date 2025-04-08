@@ -25,6 +25,5 @@ object Info {
         println("Количество элементов: ${WorkerManager.collection.size}")
         println("Тип хранимых элементов: ${WorkerManager.collection.firstOrNull()?.javaClass?.simpleName ?: "Не определено"}")
         println("Автоматически генерируемые поля: id, creationDate")
-
     }
 }

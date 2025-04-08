@@ -67,6 +67,13 @@ fun main() {
                     else -> CountLessThenPosition.countLess_positionCommand(args[0])
                 }
             }
+            "filter_starts_with_name" -> {
+                when {
+                    args.isEmpty() -> println("Ошибка: требуется указать подстроку")
+                    args.size > 1 -> println("Ошибка: слишком много аргументов")
+                    else -> FilterStartsWithName.filterStarts_nameCommand(args[0])
+                }
+            }
             "exit" -> break
             else -> println("Неизвестная команда. Введите 'help' для списка команд.")
         }

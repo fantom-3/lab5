@@ -18,9 +18,4 @@ class Worker(
     override fun compareTo(other: Worker): Int {
         return id.compareTo(other.id)
     }
-
-    override fun toString(): String {
-        return "Worker(id=$id, name='$name', coordinates=$coordinates, creationDate=$creationDate," +
-                "salary=$salary, startDate=$startDate, endDate=$endDate, position=$position, person=$person)"
-    }
 }
