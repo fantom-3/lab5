@@ -6,11 +6,11 @@ import WorkerClass.WorkerManager
 /**
  * Команда для подсчета элементов с position меньше заданной
  */
-object CountLessThenPosition {
+object CountLessThanPosition {
 
     /**
      * Выполняет подсчет элементов с position меньше заданной
-     * @param positionStr Название позиции для сравнения
+     * @param positionInp Название позиции для сравнения
      */
     fun countLess_positionCommand(positionInp: String) {
         val targetPosition = try {

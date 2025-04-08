@@ -21,6 +21,7 @@ fun main() {
             "info" -> Info.infoCommand()
             "head" -> Head.headCommand()
             "remove_head" -> RemoveHead.remove_headCommand()
+            "clear" -> Clear.clearCommand()
             "update" -> {
                 when {
                     args.isEmpty() -> println("Ошибка: отсутствует ID")
@@ -43,7 +44,6 @@ fun main() {
                     }
                 }
             }
-            "clear" -> Clear.clearCommand()
             "save" -> {
                 when {
                     args.size > 1 -> println("Ошибка: слишком много аргументов")
@@ -64,7 +64,7 @@ fun main() {
             "count_less_than_position position" -> {
                 when {
                     args.size == 0 -> println("Ошибка: введите аргумент")
-                    else -> CountLessThenPosition.countLess_positionCommand(args[0])
+                    else -> CountLessThanPosition.countLess_positionCommand(args[0])
                 }
             }
             "filter_starts_with_name" -> {
@@ -72,6 +72,13 @@ fun main() {
                     args.isEmpty() -> println("Ошибка: требуется указать подстроку")
                     args.size > 1 -> println("Ошибка: слишком много аргументов")
                     else -> FilterStartsWithName.filterStarts_nameCommand(args[0])
+                }
+            }
+            "filter_less_than_position" -> {
+                when {
+                    args.isEmpty() -> println("Ошибка: требуется указать позицию для фильтрации")
+                    args.size > 1 -> println("Ошибка: слишком много аргументов")
+                    else -> FilterLessThanPosition.filterLess_positionCommand(args[0])
                 }
             }
             "exit" -> break

@@ -21,7 +21,7 @@ object Help {
             count_less_than_position position : вывести количество элементов, значение поля position которых меньше заданного
             filter_starts_with_name name : вывести элементы, значение поля name которых начинается с заданной подстроки
             filter_less_than_position position : вывести элементы, значение поля position которых меньше заданного
-            """.trimIndent()
+            """.trimMargin()
         )
     }
 }

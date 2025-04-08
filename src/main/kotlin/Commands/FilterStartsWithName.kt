@@ -25,10 +25,20 @@ object FilterStartsWithName {
 
     private fun format_posWorker(worker: Worker): String {
         return """
-                |ID: ${worker.id}
-                |Имя: ${worker.name}
-                |Должность: ${worker.position ?: "не указана"}
-                |----------
-            """.trimMargin()
+            |Первый элемент коллекции:
+            |ID: ${worker.id}
+            |Имя: ${worker.name}
+            |Координаты: (x=${worker.coordinates.x}, y=${worker.coordinates.y})
+            |Дата создания: ${worker.creationDate}
+            |Зарплата: ${worker.salary}
+            |Дата начала работы: ${worker.startDate}
+            |Дата окончания: ${worker.endDate ?: "не указана"}
+            |Должность: ${worker.position ?: "не указана"}
+            |Личные данные:
+            |   Дата рождения: ${worker.person.birthday}
+            |   Цвет глаз: ${worker.person.eyeColor ?: "не указан"}
+            |   Цвет волос: ${worker.person.hairColor}
+            |   Национальность: ${worker.person.nationality}
+        """.trimMargin()
     }
 }
