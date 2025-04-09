@@ -81,7 +81,7 @@ fun main() {
                     else -> FilterLessThanPosition.filterLess_positionCommand(args[0])
                 }
             }
-            "exit" -> break
+            "exit" -> Exit.exitCommand()
             else -> println("Неизвестная команда. Введите 'help' для списка команд.")
         }
     }

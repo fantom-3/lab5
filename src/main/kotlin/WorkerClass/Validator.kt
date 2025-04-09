@@ -1,22 +1,8 @@
 package WorkerClass
 
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.ZonedDateTime
 
 object Validator {
-    /**
-     * Валидация ID работника.
-     * ID должен быть больше 0.
-     */
-    fun validateId(id: Int): Boolean {
-        if (id <= 0) {
-            println("Предупреждение: ID должен быть больше 0.")
-            return false
-        }
-        return true
-    }
-
     /**
      * Валидация имени работника.
      * Имя не может быть null или пустым.
@@ -67,53 +53,6 @@ object Validator {
             println("Предупреждение: Дата начала работы не может быть null.")
             return false
         }
-        return true
-    }
-
-    /**
-     * Валидация даты окончания работы.
-     * Дата может быть null (если работник ещё работает).
-     */
-    fun validateEndDate(endDate: LocalDate?): Boolean {
-        // Дата окончания может быть null, поэтому всегда возвращаем true
-        return true
-    }
-
-    /**
-     * Валидация должности.
-     * Должность может быть null.
-     */
-    fun validatePosition(position: Position?): Boolean {
-        // Должность может быть null, поэтому всегда возвращаем true
-        return true
-    }
-
-    /**
-     * Валидация личных данных работника.
-     * Поля birthday, hairColor и nationality не могут быть null.
-     */
-    fun validatePerson(birthday: LocalDateTime?, hairColor: Color?, nationality: Country?): Boolean {
-        if (birthday == null) {
-            println("Предупреждение: Дата рождения не может быть null.")
-            return false
-        }
-        if (hairColor == null) {
-            println("Предупреждение: Цвет волос не может быть null.")
-            return false
-        }
-        if (nationality == null) {
-            println("Предупреждение: Национальность не может быть null.")
-            return false
-        }
-        return true
-    }
-
-    /**
-     * Валидация цвета глаз.
-     * Цвет глаз может быть null.
-     */
-    fun validateEyeColor(eyeColor: Color?): Boolean {
-        // Цвет глаз может быть null, поэтому всегда возвращаем true
         return true
     }
 }
