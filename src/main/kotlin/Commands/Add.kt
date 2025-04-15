@@ -9,37 +9,19 @@ object Add {
     fun addCommand() {
         println("Добавление нового работника:")
 
-        // Генерация автоматических полей
-        val id = Utils.generateId()
-        val creationDate = Utils.generateCreationDate()
-
-        // Ввод имени
-        val name = readValidName()
-
-        // Ввод координат
-        val coordinates = readValidCoordinates()
-
-        // Ввод зарплаты
-        val salary = readValidSalary()
-
-        // Ввод даты начала работы
-        val startDate = readValidStartDate()
-
-        // Ввод даты окончания работы
-        val endDate = readValidEndDate()
-
-        // Ввод должности
-        val position = readValidPosition()
-
-        // Ввод личных данных
-        val person = readValidPerson()
-
-        // Создание нового работника
-        val worker = Worker(id, name, coordinates, creationDate, salary, startDate, endDate, position, person)
-
-        // Добавление работника в коллекцию
+        val worker = Worker(
+            id = Utils.generateId(),
+            name = readValidName(),
+            coordinates = readValidCoordinates(),
+            creationDate = Utils.generateCreationDate(),
+            salary = readValidSalary(),
+            startDate = readValidStartDate(),
+            endDate = readValidEndDate(),
+            position = readValidPosition(),
+            person = readValidPerson()
+        )
         WorkerManager.addWorker(worker)
-        println("Работник успешно добавлен в коллекцию.")
+        println("Работник c ID - ${worker.id} успешно добавлен в коллекцию.")
     }
 
         /**
@@ -48,14 +30,20 @@ object Add {
          * @return Валидное имя работника.
          */
         private fun readValidName(): String {
-            println("Введите имя работника:")
+            println("Введите имя работника (только буквы и пробелы):")
+            val nameRegex = Regex("^[\\p{L} ]+\$") // Только буквы и пробелы
             while (true) {
                 print("> ")
                 val name = readln().trim()
-                if (Validator.validateName(name)) {
-                    return name
+                when {
+                    name.isEmpty() -> {
+                        println("Ошибка: Имя не может быть пустым. Повторите ввод.")
+                    }
+                    !name.matches(nameRegex) -> {
+                        println("Ошибка: Имя может содержать только буквы и пробелы. Повторите ввод.")
+                    }
+                    else -> return name
                 }
-                println("Ошибка: Имя не может быть пустым. Повторите ввод.")
             }
         }
 
@@ -148,11 +136,12 @@ object Add {
 
         /**
          * Чтение и валидация должности.
+         * Регистр ввода не учитывается.
          *
          * @return Валидная должность или null.
          */
         private fun readValidPosition(): Position? {
-            println("Введите должность работника из указанных: ${Position.values().joinToString(", ")}")
+            println("Введите должность работника из указанных (регистр не важен): ${Position.values().joinToString(", ")}")
             while (true) {
                 print("> ")
                 val input = readln().trim()
@@ -160,9 +149,9 @@ object Add {
                     return null
                 }
                 try {
-                    return Position.valueOf(input)
+                    return Position.valueOf(input.uppercase())
                 } catch (e: IllegalArgumentException) {
-                    println("Ошибка: Введите одну из допустимых должностей.")
+                    println("Ошибка: Введите одну из допустимых должностей: ${Position.values().joinToString()}")
                 }
             }
         }
@@ -201,11 +190,12 @@ object Add {
 
         /**
          * Чтение и валидация цвета глаз.
+         * Регистр ввода не учитывается.
          *
          * @return Валидный цвет глаз или null.
          */
         private fun readValidEyeColor(): Color? {
-            println("Введите цвет глаз из указанных: ${Color.values().joinToString(", ")} (или оставьте пустым):")
+            println("Введите цвет глаз из указанных (регистр не важен): ${Color.values().joinToString(", ")} (или оставьте пустым):")
             while (true) {
                 print("> ")
                 val input = readln().trim()
@@ -213,43 +203,47 @@ object Add {
                     return null
                 }
                 try {
-                    return Color.valueOf(input)
+                    return Color.valueOf(input.uppercase())
                 } catch (e: IllegalArgumentException) {
-                    println("Ошибка: Введите один из допустимых цветов.")
+                    println("Ошибка: Введите один из допустимых цветов: ${Color.values().joinToString()}")
                 }
             }
         }
 
         /**
          * Чтение и валидация цвета волос.
+         * Регистр ввода не учитывается.
          *
          * @return Валидный цвет волос.
          */
         private fun readValidHairColor(): Color {
-            println("Введите цвет волос из указанных: ${Color.values().joinToString(", ")}:")
+            println("Введите цвет волос из указанных (регистр не важен): ${Color.values().joinToString(", ")}:")
             while (true) {
                 print("> ")
+                val input = readln().trim()
                 try {
-                    return Color.valueOf(readln().trim())
+                    return Color.valueOf(input.uppercase())
                 } catch (e: IllegalArgumentException) {
-                    println("Ошибка: Введите один из допустимых цветов.")
+                    println("Ошибка: Введите один из допустимых цветов: ${Color.values().joinToString()}")
                 }
             }
         }
 
         /**
          * Чтение и валидация национальности.
+         * Регистр ввода не учитывается.
          *
          * @return Валидная национальность.
          */
         private fun readValidNationality(): Country {
-            println("Введите национальность из указанных: ${Country.values().joinToString(", ")}:")
+            println("Введите национальность из указанных (регистр не важен): ${Country.values().joinToString(", ")}:")
             while (true) {
                 print("> ")
+                val input = readln().trim()
                 try {
-                    return Country.valueOf(readln().trim())
+                    return Country.valueOf(input.uppercase())
                 } catch (e: IllegalArgumentException) {
-                    println("Ошибка: Введите одну из допустимых национальностей.")
+                    println("Ошибка: Введите одну из допустимых национальностей: ${Country.values().joinToString()}")
                 }
             }
         }
