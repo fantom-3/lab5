@@ -12,16 +12,20 @@ object Clear {
      * Удаляет все элементы из коллекции работников.
      */
     fun clearCommand() {
-        println("Вы уверены, что хотите очистить коллекцию? (y/n)")
-        print(">")
+        if (WorkerManager.collection.isEmpty()) {
+            println("Коллекция пуста.")
+        } else {
+            println("Вы уверены, что хотите очистить коллекцию? (y/n)")
+            print(">")
 
-        when (readln().trim().lowercase()) {
-            "y", "yes" -> {
-                WorkerManager.clearCollection()
-                println("Коллекция успешно очищена.")
+            when (readln().trim().lowercase()) {
+                "y", "yes" -> {
+                    WorkerManager.clearCollection()
+                    println("Коллекция успешно очищена.")
+                }
+
+                else -> println("Очистка отменена.")
             }
-
-            else -> println("Очистка отменена.")
         }
     }
 }
