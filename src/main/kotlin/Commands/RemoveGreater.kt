@@ -1,25 +1,17 @@
 package Commands
 
+import WorkerClass.IOManager
 import WorkerClass.WorkerManager
 
 object RemoveGreater {
-
     fun remove_greaterCommand(id: Int) {
         val initialSize = WorkerManager.collection.size
+        WorkerManager.collection.removeIf { it.id > id }
+        val removedCount = initialSize - WorkerManager.collection.size
 
-        val iterator = WorkerManager.collection.iterator()
-        var removedCount = 0
-
-        while (iterator.hasNext()) {
-            if (iterator.next().id > id) {
-                iterator.remove()
-                removedCount++
-            }
-        }
-
-        when (removedCount) {
-            0 -> println("Не найдено элементов с ID больше $id")
-            else -> println("Удалено $removedCount элементов")
+        when {
+            removedCount == 0 -> IOManager.printMessage("Не найдено элементов с ID больше $id")
+            else -> IOManager.printMessage("Удалено $removedCount элементов")
         }
     }
 }

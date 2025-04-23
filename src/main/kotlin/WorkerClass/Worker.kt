@@ -2,6 +2,7 @@ package WorkerClass
 
 import Utils
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.ZonedDateTime
 
 /**
@@ -27,8 +28,8 @@ class Worker(
     var coordinates: Coordinates,
     var creationDate: LocalDate = Utils.generateCreationDate(),
     var salary: Long,
-    var startDate: ZonedDateTime = Utils.generateStartDate(),
-    var endDate: ZonedDateTime?,
+    var startDate: ZonedDateTime? = null,
+    var endDate: LocalDateTime?,
     var position: Position?,
     var person: Person
 ) : Comparable<Worker> {

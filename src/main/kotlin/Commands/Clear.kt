@@ -1,4 +1,5 @@
 package Commands
+import WorkerClass.IOManager
 import  WorkerClass.WorkerManager
 
 /**
@@ -13,19 +14,16 @@ object Clear {
      */
     fun clearCommand() {
         if (WorkerManager.collection.isEmpty()) {
-            println("Коллекция пуста.")
+            IOManager.printMessage("Коллекция пуста.")
+            return
+        }
+
+        val confirm = IOManager.readConfirmation("Вы уверены, что хотите очистить коллекцию?")
+        if (confirm) {
+            WorkerManager.clearCollection()
+            IOManager.printMessage("Коллекция успешно очищена.")
         } else {
-            println("Вы уверены, что хотите очистить коллекцию? (y/n)")
-            print(">")
-
-            when (readln().trim().lowercase()) {
-                "y", "yes" -> {
-                    WorkerManager.clearCollection()
-                    println("Коллекция успешно очищена.")
-                }
-
-                else -> println("Очистка отменена.")
-            }
+            IOManager.printMessage("Очистка отменена.")
         }
     }
 }

@@ -1,25 +1,25 @@
 package Commands
 
-import kotlin.system.exitProcess
+import WorkerClass.IOManager
 
-/**
- * Команда для завершения программы (без сохранения в файл)
- */
 object Exit {
+    private var shouldExit = false
 
     /**
-     * Завершает программу с подтверждением
+     * Устанавливает флаг для мягкого выхода из программы
      */
     fun exitCommand() {
-        println("Вы уверены, что хотите выйти без сохранения? (y/n)")
-        print("> ")
-
-        when (readln().trim().lowercase()) {
-            "y", "yes" -> {
-                println("Завершение программы...")
-                exitProcess(0)  // Немедленное завершение
-            }
-            else -> println("Выход отменен.")
+        val confirm = IOManager.readConfirmation("Вы уверены, что хотите выйти без сохранения?")
+        if (confirm) {
+            shouldExit = true
+            IOManager.printMessage("Завершение программы...")
+        } else {
+            IOManager.printMessage("Выход отменен.")
         }
     }
+
+    /**
+     * Проверяет, был ли запрошен выход
+     */
+    fun shouldExit(): Boolean = shouldExit
 }

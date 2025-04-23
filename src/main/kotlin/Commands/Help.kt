@@ -1,8 +1,10 @@
 package Commands
 
+import WorkerClass.IOManager
+
 object Help {
     fun helpCommand() {
-        println(
+        IOManager.printMessage(
             """
             Доступные команды:
             

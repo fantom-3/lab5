@@ -1,21 +1,14 @@
 package Commands
 
+import WorkerClass.IOManager
 import WorkerClass.WorkerManager
 
-/**
- * Команда для вывода всех элементов коллекции в строковом представлении.
- */
 object Show {
-
-    /**
-     * Выполняет команду вывода всех элементов коллекции.
-     * Элементы выводятся в стандартный поток вывода.
-     */
     fun showCommand() {
         if (WorkerManager.collection.isEmpty()) {
-            println("Коллекция пуста.")
+            IOManager.printMessage("Коллекция пуста.")
         } else {
-            println("Элементы коллекции.")
+            IOManager.printMessage("Элементы коллекции:")
             WorkerManager.showAllWorkers()
         }
     }

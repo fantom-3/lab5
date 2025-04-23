@@ -1,6 +1,7 @@
 package Commands
 
 import WorkerClass.*
+import WorkerClass.IOManager
 import java.io.FileWriter
 
 /**
@@ -16,6 +17,17 @@ object Save {
         val targetFile = filename ?: "workers.xml"
 
         try {
+            if (WorkerManager.collection.isEmpty()) {
+                IOManager.printMessage("Коллекция пуста. Ничего не будет сохранено.")
+                return
+            }
+
+            val confirm = IOManager.readConfirmation("Сохранить коллекцию в файл $targetFile?")
+            if (!confirm) {
+                IOManager.printMessage("Сохранение отменено.")
+                return
+            }
+
             FileWriter(targetFile).use { writer ->
                 writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
                 writer.write("<workers>\n")
@@ -27,15 +39,15 @@ object Save {
                 writer.write("</workers>")
             }
 
-            println("Коллекция успешно сохранена в файл $targetFile")
+            IOManager.printMessage("Коллекция успешно сохранена в файл $targetFile")
         } catch (e: SecurityException) {
-            println("Ошибка: нет прав для записи в файл $targetFile")
+            IOManager.printError("Нет прав для записи в файл $targetFile")
         } catch (e: Exception) {
-            println("Ошибка при сохранении файла: ${e.message}")
+            IOManager.printError("Ошибка при сохранении файла: ${e.message}")
         }
     }
 
-    fun workerToXml(worker: Worker): String {
+    private fun workerToXml(worker: Worker): String {
         return """
         |  <worker>
         |    <id>${worker.id}</id>
@@ -48,12 +60,12 @@ object Save {
         |    <salary>${worker.salary}</salary>
         |    <startDate>${worker.startDate}</startDate>
         |    <endDate>${worker.endDate ?: ""}</endDate>
-        |    <position>${worker.position ?: ""}</position>
+        |    <position>${worker.position?.name ?: ""}</position>
         |    <person>
         |      <birthday>${worker.person.birthday}</birthday>
-        |      <eyeColor>${worker.person.eyeColor ?: ""}</eyeColor>
-        |      <hairColor>${worker.person.hairColor}</hairColor>
-        |      <nationality>${worker.person.nationality}</nationality>
+        |      <eyeColor>${worker.person.eyeColor?.name ?: ""}</eyeColor>
+        |      <hairColor>${worker.person.hairColor.name}</hairColor>
+        |      <nationality>${worker.person.nationality.name}</nationality>
         |    </person>
         |  </worker>
         """.trimMargin() + "\n"
