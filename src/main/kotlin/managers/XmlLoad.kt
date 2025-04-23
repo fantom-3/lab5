@@ -1,6 +1,6 @@
 package WorkerClass
 
-import org.w3c.dom.Document
+import Utils
 import org.w3c.dom.Element
 import org.w3c.dom.Node
 import java.io.File
@@ -43,7 +43,7 @@ object XmlLoader {
                     }
                 }
             }
-
+            Utils.xmlID(WorkerManager.collection.size)
             IOManager.printMessage("Загружено ${WorkerManager.collection.size} работников из $filename")
         } catch (e: Exception) {
             IOManager.printError("Ошибка загрузки XML: ${e.message}")
@@ -112,4 +112,6 @@ object XmlLoader {
     private fun Element.getTextContent(tagName: String): String {
         return getElementsByTagName(tagName).item(0).textContent
     }
+
+
 }

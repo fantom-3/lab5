@@ -40,4 +40,9 @@ object Utils {
     fun generateStartDate(): ZonedDateTime {
         return ZonedDateTime.now()
     }
+
+    fun xmlID(arg: Int) :Int {
+        nextId = arg+1
+        return nextId
+    }
 }
