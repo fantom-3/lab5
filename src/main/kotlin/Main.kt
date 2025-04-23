@@ -1,8 +1,9 @@
-import java.util.*
 import Commands.*
+import java.util.*
 
 fun main() {
     val scanner = Scanner(System.`in`)
+
     println("Программа для управления коллекцией работников. Введите 'help' для вывода доступных команд.")
 
     while (true) {
@@ -47,7 +48,7 @@ fun main() {
             "save" -> {
                 when {
                     args.size > 1 -> println("Ошибка: слишком много аргументов")
-                    else -> SaveCommand.execute(args.firstOrNull())
+                    else -> Save.saveCommand(args.firstOrNull())
                 }
             }
             "remove_greater" -> {
@@ -61,7 +62,7 @@ fun main() {
                     }
                 }
             }
-            "count_less_than_position position" -> {
+            "count_less_than_position" -> {
                 when {
                     args.size == 0 -> println("Ошибка: введите аргумент")
                     else -> CountLessThanPosition.countLess_positionCommand(args[0])
@@ -79,6 +80,13 @@ fun main() {
                     args.isEmpty() -> println("Ошибка: требуется указать позицию для фильтрации")
                     args.size > 1 -> println("Ошибка: слишком много аргументов")
                     else -> FilterLessThanPosition.filterLess_positionCommand(args[0])
+                }
+            }
+            "execute_script" -> {
+                when {
+                    args.isEmpty() -> println("Ошибка: требуется указать файл скрипта")
+                    args.size > 1 -> println("Ошибка: слишком много аргументов")
+                    else -> Execute.executeCommand(args[0])
                 }
             }
             "exit" -> Exit.exitCommand()

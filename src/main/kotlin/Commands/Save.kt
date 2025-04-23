@@ -6,13 +6,13 @@ import java.io.FileWriter
 /**
  * Команда для сохранения коллекции в XML-файл.
  */
-object SaveCommand {
+object Save {
 
     /**
      * Выполняет сохранение коллекции в файл.
      * @param filename Имя файла для сохранения (если null, используется значение по умолчанию)
      */
-    fun execute(filename: String? = null) {
+    fun saveCommand(filename: String? = null) {
         val targetFile = filename ?: "workers.xml"
 
         try {
@@ -35,7 +35,7 @@ object SaveCommand {
         }
     }
 
-    private fun workerToXml(worker: Worker): String {
+    fun workerToXml(worker: Worker): String {
         return """
         |  <worker>
         |    <id>${worker.id}</id>

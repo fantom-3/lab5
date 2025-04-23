@@ -28,7 +28,7 @@ class Worker(
     var creationDate: LocalDate = Utils.generateCreationDate(),
     var salary: Long,
     var startDate: ZonedDateTime = Utils.generateStartDate(),
-    var endDate: LocalDate?,
+    var endDate: ZonedDateTime?,
     var position: Position?,
     var person: Person
 ) : Comparable<Worker> {

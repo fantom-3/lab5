@@ -118,7 +118,7 @@ object Add {
          *
          * @return Валидная дата окончания работы или null.
          */
-        private fun readValidEndDate(): LocalDate? {
+        private fun readValidEndDate(): ZonedDateTime? {
             println("Введите дату окончания работы в формате ISO-8601 (или оставьте пустым):")
             while (true) {
                 print("> ")
@@ -127,7 +127,7 @@ object Add {
                     return null
                 }
                 try {
-                    return LocalDate.parse(input)
+                    return ZonedDateTime.parse(input)
                 } catch (e: Exception) {
                     println("Ошибка: Введите дату в формате ISO-8601 или оставьте пустым.")
                 }

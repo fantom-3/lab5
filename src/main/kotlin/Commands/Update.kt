@@ -57,7 +57,7 @@ object Update {
             currentValue = worker.endDate,
             prompt = "Текущая дата окончания: ${worker.endDate ?: "не указана"}. Введите новую дату (ISO-8601) или оставьте пустым:",
             validator = { true },
-            parser = { if (it.isEmpty()) null else LocalDate.parse(it) }
+            parser = { if (it.isEmpty()) null else ZonedDateTime.parse(it) }
         ) ?: worker.endDate
 
         // Обновление должности
