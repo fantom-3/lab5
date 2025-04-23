@@ -1,13 +1,39 @@
 import Commands.*
-import WorkerClass.IOManager
+import WorkerClass.*
+import java.io.File
 import java.util.*
 
-fun main() {
+fun main(args: Array<String>) {
+    // Путь к файлу по умолчанию
+    val defaultFile = "workers.xml"
+
+    // Загрузка данных из XML при старте
+    if (args.isNotEmpty()) {
+        XmlLoader.loadFromXml(args[0])
+    } else {
+        try {
+            when {
+                // Если файл существует - загружаем
+                File(defaultFile).exists() -> {
+                    XmlLoader.loadFromXml(defaultFile)
+                    IOManager.printMessage("Коллекция загружена из $defaultFile (${WorkerManager.collection.size} работников)")
+                }
+                // Если файла нет - создаем пустую коллекцию
+                else -> {
+                    IOManager.printMessage("Файл $defaultFile не найден. Коллекция будет пустой.")
+                }
+            }
+        } catch (e: Exception) {
+            IOManager.printError("Ошибка при загрузке данных: ${e.message}")
+            IOManager.printMessage("Коллекция будет пустой.")
+        }
+    }
+
     val scanner = Scanner(System.`in`)
 
     IOManager.printMessage("Программа для управления коллекцией работников. Введите 'help' для вывода доступных команд.")
 
-    while (true) {
+    while (!Exit.shouldExit()) {
         print("> ")
         val userInput = scanner.nextLine().trim()
         if (userInput.isEmpty()) continue
