@@ -1,5 +1,8 @@
 package WorkerClass
 
+/**
+ * Enum-класс, представляющий возможные цвета.
+ */
 enum class Color {
     GREEN,
     RED,

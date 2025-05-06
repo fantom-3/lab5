@@ -1,11 +1,21 @@
 package Commands
 
 import WorkerClass.IOManager
-import java.util.*
+
+/**
+ * Реестр всех доступных команд приложения.
+ *
+ * Обеспечивает регистрацию и выполнение команд на основе пользовательского ввода.
+ * Поддерживает команды с аргументами и безопасную обработку ошибок.
+ */
 
 object CommandRegistry {
     private val commands = mutableMapOf<String, (List<String>) -> Unit>()
 
+    /**
+     * Словарь, содержащий команды и соответствующие им обработчики.
+     * Ключ — имя команды, значение — функция, принимающая список аргументов.
+     */
     init {
         // Регистрируем все команды
         register("help") { Help.helpCommand() }
@@ -22,14 +32,28 @@ object CommandRegistry {
         register("count_less_than_position") { args -> handleCountLessThanPosition(args) }
         register("filter_starts_with_name") { args -> handleFilterStartsWithName(args) }
         register("filter_less_than_position") { args -> handleFilterLessThanPosition(args) }
-        // register("execute_script") { args -> handleExecuteScript(args) }
+        register("execute_script") { args -> handleExecuteScript(args) }
         register("exit") { Exit.exitCommand() }
     }
 
+    /**
+     * Регистрирует новую команду.
+     *
+     * @param name Имя команды.
+     * @param handler Функция-обработчик команды.
+     */
     private fun register(name: String, handler: (List<String>) -> Unit) {
         commands[name] = handler
     }
 
+    /**
+     * Выполняет команду, введённую пользователем.
+     *
+     * Парсит входную строку на имя команды и аргументы, находит зарегистрированную команду
+     * и вызывает соответствующий обработчик.
+     *
+     * @param input Введённая строка команды с аргументами.
+     */
     fun executeCommand(input: String) {
         val parts = input.trim().split("\\s+".toRegex())
         if (parts.isEmpty()) return
@@ -45,7 +69,11 @@ object CommandRegistry {
         }
     }
 
-    // Обработчики сложных команд
+    /**
+     * Обрабатывает команду `update`, ожидающую числовой ID.
+     *
+     * @param args Аргументы команды.
+     */
     private fun handleUpdate(args: List<String>) {
         if (args.isEmpty()) {
             IOManager.printError("Ошибка: отсутствует ID")
@@ -58,6 +86,11 @@ object CommandRegistry {
         }
     }
 
+    /**
+     * Обрабатывает команду `remove_by_id`.
+     *
+     * @param args Аргументы команды.
+     */
     private fun handleRemoveById(args: List<String>) {
         if (args.isEmpty()) {
             IOManager.printError("Ошибка: отсутствует ID")
@@ -70,6 +103,11 @@ object CommandRegistry {
         }
     }
 
+    /**
+     * Обрабатывает команду `remove_greater`.
+     *
+     * @param args Аргументы команды.
+     */
     private fun handleRemoveGreater(args: List<String>) {
         if (args.isEmpty()) {
             IOManager.printError("Ошибка: отсутствует ID")
@@ -82,6 +120,11 @@ object CommandRegistry {
         }
     }
 
+    /**
+     * Обрабатывает команду `count_less_than_position`.
+     *
+     * @param args Аргументы команды.
+     */
     private fun handleCountLessThanPosition(args: List<String>) {
         if (args.isEmpty()) {
             IOManager.printError("Ошибка: требуется указать позицию")
@@ -90,6 +133,11 @@ object CommandRegistry {
         }
     }
 
+    /**
+     * Обрабатывает команду `filter_starts_with_name`.
+     *
+     * @param args Аргументы команды.
+     */
     private fun handleFilterStartsWithName(args: List<String>) {
         if (args.isEmpty()) {
             IOManager.printError("Ошибка: требуется указать подстроку")
@@ -98,6 +146,11 @@ object CommandRegistry {
         }
     }
 
+    /**
+     * Обрабатывает команду `filter_less_than_position`.
+     *
+     * @param args Аргументы команды.
+     */
     private fun handleFilterLessThanPosition(args: List<String>) {
         if (args.isEmpty()) {
             IOManager.printError("Ошибка: требуется указать позицию")
@@ -106,11 +159,16 @@ object CommandRegistry {
         }
     }
 
-    /*private fun handleExecuteScript(args: List<String>) {
+    /**
+     * Обрабатывает команду `execute_script`.
+     *
+     * @param args Аргументы команды.
+     */
+    private fun handleExecuteScript(args: List<String>) {
         if (args.isEmpty()) {
             IOManager.printError("Ошибка: требуется указать файл скрипта")
         } else {
             Execute.executeCommand(args[0])
         }
-    }*/
+    }
 }

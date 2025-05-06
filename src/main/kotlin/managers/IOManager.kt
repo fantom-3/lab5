@@ -1,6 +1,5 @@
 package WorkerClass
 
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZonedDateTime
 import java.util.*
@@ -10,7 +9,20 @@ import java.util.*
  * Обеспечивает стандартизированный ввод и вывод данных.
  */
 object IOManager {
-    private val scanner = Scanner(System.`in`)
+
+    /**
+     * Читает следующую строку ввода
+     */
+    fun readLine(): String {
+        return Scanner(System.`in`).nextLine()
+    }
+
+    /**
+     * Проверяет наличие следующей строки
+     */
+    fun hasNextLine(): Boolean {
+        return Scanner(System.`in`).hasNextLine()
+    }
 
     /**
      * Выводит сообщение пользователю
@@ -64,7 +76,7 @@ object IOManager {
     ): String? {
         while (true) {
             printPrompt(fieldName, currentValue, isRequired)
-            val input = scanner.nextLine().trim()
+            val input = readLine().trim()
 
             when {
                 input.isEmpty() && !isRequired -> return null
@@ -91,7 +103,7 @@ object IOManager {
     ): Long? {
         while (true) {
             printPrompt(fieldName, currentValue, isRequired)
-            val input = scanner.nextLine().trim()
+            val input = readLine().trim()
 
             if (input.isEmpty() && !isRequired) return null
             if (input.isEmpty()) {
@@ -128,7 +140,7 @@ object IOManager {
     ): Double? {
         while (true) {
             printPrompt(fieldName, currentValue, isRequired)
-            val input = scanner.nextLine().trim()
+            val input = readLine().trim()
 
             if (input.isEmpty() && !isRequired) return null
             if (input.isEmpty()) {
@@ -166,7 +178,7 @@ object IOManager {
         while (true) {
             val valuesList = enumValues.joinToString { it.name }
             printPrompt("$fieldName ($valuesList)", currentValue, isRequired)
-            val input = scanner.nextLine().trim().uppercase()
+            val input = readLine().trim().uppercase()
 
             if (input.isEmpty() && !isRequired) return null
             if (input.isEmpty()) {
@@ -196,7 +208,7 @@ object IOManager {
     ): LocalDateTime? {
         while (true) {
             printPrompt("$fieldName (формат: ГГГГ-ММ-ДДTЧЧ:ММ:СС)", currentValue, isRequired)
-            val input = scanner.nextLine().trim()
+            val input = readLine().trim()
 
             if (input.isEmpty() && !isRequired) return null
             if (input.isEmpty()) {
@@ -226,7 +238,7 @@ object IOManager {
     ): ZonedDateTime? {
         while (true) {
             printPrompt("$fieldName (формат: ГГГГ-ММ-ДДTЧЧ:ММ:СС+Зона)", currentValue, isRequired)
-            val input = scanner.nextLine().trim()
+            val input = readLine().trim()
 
             if (input.isEmpty() && !isRequired) return null
             if (input.isEmpty()) {
@@ -250,7 +262,7 @@ object IOManager {
     fun readConfirmation(question: String): Boolean {
         while (true) {
             print("> $question (да/нет): ")
-            val input = scanner.nextLine().trim().lowercase()
+            val input = readLine().trim().lowercase()
 
             when (input) {
                 "да", "д", "yes", "y" -> return true

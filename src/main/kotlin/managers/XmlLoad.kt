@@ -50,10 +50,21 @@ object XmlLoader {
         }
     }
 
+    /**
+     * Преобразует XML-элемент в объект Worker
+     * @param workerElement XML-элемент <worker>
+     * @return Объект Worker
+     * @throws Exception если структура некорректна
+     */
     private fun parseWorkerElement(workerElement: Element): Worker {
         val id = workerElement.getTextContent("id").toInt()
         val name = workerElement.getTextContent("name")
 
+        /**
+         * Парсит координаты из XML-элемента
+         * @param coordinatesElement XML-элемент <coordinates>
+         * @return Объект Coordinates
+         */
         val coordinates = parseCoordinates(
             workerElement.getElementsByTagName("coordinates").item(0) as Element
         )
@@ -73,6 +84,11 @@ object XmlLoader {
             if (it.isNotEmpty()) Position.valueOf(it) else null
         }
 
+        /**
+         * Парсит объект Person из XML-элемента
+         * @param personElement XML-элемент <person>
+         * @return Объект Person
+         */
         val person = parsePerson(
             workerElement.getElementsByTagName("person").item(0) as Element
         )
@@ -109,9 +125,12 @@ object XmlLoader {
         return Person(birthday, eyeColor, hairColor, nationality)
     }
 
+    /**
+     * Получает текстовое содержимое первого дочернего тега с заданным именем
+     * @param tagName Имя тега
+     * @return Текстовое содержимое
+     */
     private fun Element.getTextContent(tagName: String): String {
         return getElementsByTagName(tagName).item(0).textContent
     }
-
-
 }
