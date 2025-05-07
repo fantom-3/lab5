@@ -1,6 +1,7 @@
 package WorkerClass
 
 import java.io.File
+import java.io.PrintWriter
 import java.time.LocalDateTime
 import java.time.ZonedDateTime
 import java.util.*
@@ -11,6 +12,7 @@ import java.util.*
  */
 object IOManager {
     private var currentScanner: Scanner = Scanner(System.`in`)
+    private val out = System.out
     private val scannerStack = Stack<Scanner>()
     private var isScriptMode = false
 
@@ -49,7 +51,7 @@ object IOManager {
      * @param message Текст сообщения
      */
     fun printMessage(message: String) {
-        println(message)
+        out.println(message)
     }
 
     /**

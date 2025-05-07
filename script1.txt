@@ -1,9 +1,6 @@
 help
 info
 execute_script script2.txt
-add
-Nina
 show
 remove_head
 filter_starts_with_name Alex
-exit

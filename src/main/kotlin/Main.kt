@@ -4,15 +4,13 @@ import WorkerClass.XmlLoader
 import java.io.File
 
 fun main() {
-    // Загрузка данных
     val defaultFile = "workers.xml"
     if (File(defaultFile).exists()) {
         XmlLoader.loadFromXml(defaultFile)
     }
 
-    // Основной цикл
     IOManager.printMessage("Программа готова к работе. Введите 'help' для списка команд.")
-
+2
     while (!Commands.Exit.shouldExit()) {
         IOManager.printMessage("> ")
         val userInput = IOManager.readLine().trim()

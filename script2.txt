@@ -12,5 +12,4 @@ BLUE
 BLACK
 INDIA
 show
-exit
-y
+execute_script script3.txt

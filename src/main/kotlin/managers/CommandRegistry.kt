@@ -17,7 +17,6 @@ object CommandRegistry {
      * Ключ — имя команды, значение — функция, принимающая список аргументов.
      */
     init {
-        // Регистрируем все команды
         register("help") { Help.helpCommand() }
         register("add") { Add.addCommand() }
         register("show") { Show.showCommand() }
@@ -32,13 +31,7 @@ object CommandRegistry {
         register("count_less_than_position") { args -> handleCountLessThanPosition(args) }
         register("filter_starts_with_name") { args -> handleFilterStartsWithName(args) }
         register("filter_less_than_position") { args -> handleFilterLessThanPosition(args) }
-        register("execute_script") { args ->
-            when {
-                args.isEmpty() -> IOManager.printError("Укажите файл скрипта")
-                else -> Execute.executeCommand(args[0])
-            }
-        }
-        // register("execute_script") { args -> handleExecuteScript(args) }
+        register("execute_script") { args -> handleExecuteScript(args) }
         register("exit") { Exit.exitCommand() }
     }
 
