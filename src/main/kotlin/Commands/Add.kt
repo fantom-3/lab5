@@ -7,7 +7,9 @@ import java.time.ZonedDateTime
 
 object Add {
     fun addCommand() {
-        IOManager.printMessage("Добавление нового работника:")
+        if (!IOManager.inScriptMode()) {
+            IOManager.printMessage("Добавление нового работника:")
+        }
 
         val worker = Worker(
             id = Utils.generateId(),
@@ -21,7 +23,12 @@ object Add {
             person = readValidPerson()
         )
         WorkerManager.addWorker(worker)
-        IOManager.printMessage("Работник c ID - ${worker.id} успешно добавлен в коллекцию.")
+        if (IOManager.inScriptMode()) {
+            IOManager.printMessage("Работник добавлен из скрипта:")
+            IOManager.printMessage(worker.toString())
+        } else {
+            IOManager.printMessage("Работник c ID - ${worker.id} успешно добавлен в коллекцию.")
+        }
     }
 
     private fun readValidName(): String {
@@ -33,7 +40,9 @@ object Add {
     }
 
     private fun readValidCoordinates(): Coordinates {
-        IOManager.printMessage("Ввод координат:")
+        if (!IOManager.inScriptMode()) {
+            IOManager.printMessage("Ввод координат:")
+        }
         val x = IOManager.readLong(
             fieldName = "координата x (целое число ≤ 42)",
             validator = { it <= 42 },
@@ -80,7 +89,9 @@ object Add {
     }
 
     private fun readValidPerson(): Person {
-        IOManager.printMessage("Ввод личных данных работника:")
+        if (!IOManager.inScriptMode()) {
+            IOManager.printMessage("Ввод личных данных работника:")
+        }
         val birthday = IOManager.readLocalDateTime(
             fieldName = "дата рождения (ГГГГ-ММ-ДДTЧЧ:ММ:СС)",
             isRequired = true

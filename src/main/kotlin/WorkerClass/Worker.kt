@@ -46,4 +46,23 @@ class Worker(
     override fun compareTo(other: Worker): Int {
         return id.compareTo(other.id)
     }
+
+    override fun toString(): String {
+        return """
+        ID: $id
+        Имя: $name
+        Координаты: (x=${coordinates.x}, y=${coordinates.y})
+        Дата создания: $creationDate
+        Зарплата: $salary
+        Дата начала работы: $startDate
+        Дата окончания: ${endDate ?: "не указана"}
+        Должность: ${position ?: "не указана"}
+        Личные данные:
+          Дата рождения: ${person.birthday}
+          Цвет глаз: ${person.eyeColor ?: "не указан"}
+          Цвет волос: ${person.hairColor}
+          Национальность: ${person.nationality}
+    """.trimIndent()
+    }
+
 }

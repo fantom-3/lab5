@@ -12,7 +12,10 @@ object Update {
                 return
             }
 
-        IOManager.printMessage("Обновление работника с ID $id. Оставьте поле пустым, чтобы сохранить текущее значение.")
+        if (!IOManager.inScriptMode()) {
+            IOManager.printMessage("Обновление работника с ID $id. Оставьте поле пустым, чтобы сохранить текущее значение.")
+        }
+
 
         worker.name = IOManager.readString(
             fieldName = "имя",
@@ -28,7 +31,12 @@ object Update {
         worker.position = readValidPosition(worker.position)
         worker.person = updatePerson(worker.person) ?: worker.person
 
-        IOManager.printMessage("Работник с ID $id успешно обновлен.")
+        if (IOManager.inScriptMode()) {
+            IOManager.printMessage("Работник с ID $id обновлён из скрипта:")
+            IOManager.printMessage(worker.toString())
+        } else {
+            IOManager.printMessage("Работник с ID $id успешно обновлен.")
+        }
     }
 
     private fun updateCoordinates(current: Coordinates): Coordinates? {
@@ -85,7 +93,10 @@ object Update {
     }
 
     private fun updatePerson(current: Person): Person? {
-        IOManager.printMessage("Обновление личных данных:")
+        if (!IOManager.inScriptMode()) {
+            IOManager.printMessage("Обновление личных данных:")
+        }
+
 
         val birthday = IOManager.readLocalDateTime(
             fieldName = "дата рождения",

@@ -1,5 +1,6 @@
 package WorkerClass
 
+import java.io.File
 import java.time.LocalDateTime
 import java.time.ZonedDateTime
 import java.util.*
@@ -9,19 +10,38 @@ import java.util.*
  * Обеспечивает стандартизированный ввод и вывод данных.
  */
 object IOManager {
+    private var currentScanner: Scanner = Scanner(System.`in`)
+    private val scannerStack = Stack<Scanner>()
+    private var isScriptMode = false
+
+    fun setScanner(file: File) {
+        scannerStack.push(currentScanner)
+        currentScanner = Scanner(file)
+        isScriptMode = true
+    }
+
+    fun restoreScanner() {
+        currentScanner.close()
+        if (scannerStack.isNotEmpty()) {
+            currentScanner = scannerStack.pop()
+        }
+        isScriptMode = false
+    }
+
+    fun inScriptMode(): Boolean = isScriptMode
 
     /**
      * Читает следующую строку ввода
      */
     fun readLine(): String {
-        return Scanner(System.`in`).nextLine()
+        return currentScanner.nextLine()
     }
 
     /**
      * Проверяет наличие следующей строки
      */
     fun hasNextLine(): Boolean {
-        return Scanner(System.`in`).hasNextLine()
+        return currentScanner.hasNextLine()
     }
 
     /**
@@ -47,6 +67,8 @@ object IOManager {
      * @param isRequired Обязательное ли поле
      */
     private fun printPrompt(fieldName: String, currentValue: Any? = null, isRequired: Boolean = true) {
+        if (isScriptMode) return
+
         val prompt = buildString {
             append("Введите $fieldName")
             if (currentValue != null) {
@@ -58,6 +80,7 @@ object IOManager {
             append(":")
         }
         print("> $prompt ")
+        System.out.flush()
     }
 
     /**
