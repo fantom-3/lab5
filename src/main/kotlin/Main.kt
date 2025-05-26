@@ -10,7 +10,7 @@ fun main() {
     }
 
     IOManager.printMessage("Программа готова к работе. Введите 'help' для списка команд.")
-2
+
     while (!Commands.Exit.shouldExit()) {
         IOManager.printMessage("> ")
         val userInput = IOManager.readLine().trim()
